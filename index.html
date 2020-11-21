@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+     
+       body{
+           margin: 0;
+           font-family: 'segeo UI';
+           background-color: thistle;       
+            text-align: center;
+
+   
+       }
+
+      .app{
+        background-color: rgb(156, 132, 156);
+        border-radius: 12px;
+        width: 60vw;
+        margin: 80px auto;
+      }
+
+      .app h2{
+         padding: 20px;
+          text-align: center;
+      }
+      
+      .todo-item{
+        background-color: rgb(185, 166, 166);
+          margin: 0 60px;
+          margin-bottom: 10px;
+          padding: 10px;
+          box-shadow: 0px 1px 5px rgba(131, 96, 119, 8);
+          display: flex;
+          
+
+      }
+      .todo-title{
+          flex:1;
+          width: 30vw;
+          word-wrap: break-word;
+      }
+     
+      .todo-input button{
+          padding: 10px;
+          border:0;
+          background-color: thistle;
+          margin: 2px;
+          color: rgb(58, 48, 68);
+          box-shadow: 1px 2px 4px rgba(0, 0,0, 0.2); 
+          border-radius: 12px;
+          
+      }
+      .todo-action a{
+          text-decoration: none;
+          
+         
+      }
+      .todo-action .action-delete{
+        color: rgb(184, 66, 91);
+       
+      }
+      .todo-input{
+          text-align: center;
+          padding: 20px;
+          
+         
+      }
+      .todo-input input{
+         
+         padding: 7px;
+         border-radius: 12px;
+          box-shadow: 1px 2px 4px rgba(0, 0,0, 0.2); 
+          
+      }
+    </style>
+</head>
+<body>
+    <h1>
+        <a href="" class="typewrite" data-period="2000" data-type='[ "Hi, Im Ambesh.", "I am Creative.", "This is TODOLIST With DOM", "I Love to Develop." ]'>
+          <span class="wrap"></span>
+        </a>
+      </h1>
+    <div class="app">
+        
+        <h2>Todo List</h2>
+        <div class="todo-list">
+          
+
+        </div>
+        <div class="todo-input">
+            <input id="todoInputBox" type="text" value=""  placeholder="Add new todo"></br>
+            <input id="todoInputDescription" type="text" value=""  placeholder="Notes">
+        </br> <input type="submit" class="btn" value="Addvalue"  onclick="AddELement(todoInputBox.value, todoInputDescription.value)")>
+        </div>
+    
+    </div>
+
+
+
+    <!-- // js  -->
+    <script>
+
+        var todoList=[
+   // {
+        // id:0,
+        // title:"Hello",
+        // description:"hey"
+   // }
+   
+
+]
+
+function renderTodoItems(){
+    var todoListDiv= document.getElementsByClassName("todo-list")[0];
+   
+    var body="";
+todoList.forEach(item=>{
+    body +=`
+  <div class="todo-item" data-id="${item.id}">
+       <div class="todo-title"> 
+           ${item.title}
+           </br>
+           ${item.description}
+       </div>
+     <div class="todo-action">
+        <a href="#" class="action-delete" onclick="deleteItem(${item.id})">Delete</a>
+      </div>
+  </div>
+    `;
+})
+todoListDiv.innerHTML=body;
+
+}
+//renderTodoItems();
+
+
+
+// to assign value from the html
+var input= document.getElementById("todoInputBox");
+var click= document.getElementById("addButton");
+ var description= document.getElementById("todoInputDescription");
+
+
+ 
+   
+   
+
+// click.onclick=()=>{
+//     var newTodoTitle=input.value;
+//    // if(todoList.title.includes(newTodoTitle))
+//    //{ alert("Title Already Exist!"); } 
+
+//     //else{
+   
+//     var todoDecription=description.value; 
+//     console.log(input.value);
+   
+
+//         todoList.push({
+//         id:   todoList[todoList.length -1].id + 1,   //todoList.length+1,
+//         title:newTodoTitle,
+//          description:todoDecription,
+//   )  };
+// //}
+
+    
+
+//     console.log(todoList);
+//     document.getElementById("todoInputBox").value="";
+//     document.getElementById("todoInputDescription").value="";
+//     renderTodoItems();
+// }
+
+
+
+
+
+// adding values (note, description)
+
+function AddELement(val1,val2){
+
+
+    if(val1!="" && val2!=""){
+      
+      if(todoList.some(el => el.title===val1)){
+                                                  //if(todoList.filter(List => List.title===val1 )) 
+                                                  //  if(todoList.includes(val1)){    
+       alert("Element Already Exist..!!");
+     }
+     else{
+
+         if(todoList.length===0){
+            todoList.push({
+             id:1 ,             // id: todoList[todoList.length-1].id+1 > 0 ? todoList[todoList.length-1].id+1: 1 ,
+             title:val1,
+             description:val2,
+             
+         });
+             
+         }
+         else{
+            todoList.push({
+             id: todoList[todoList.length-1].id+1 ,
+             title:val1,
+             description:val2,
+             
+         });
+
+         }
+        
+         //console.log(todoList);
+         
+     }
+
+}
+
+else{
+
+    alert("Please Fill The Proper Way")
+}
+
+    console.log(todoList);
+    document.getElementById("todoInputBox").value="";
+    document.getElementById("todoInputDescription").value="";
+    renderTodoItems();   
+
+
+}
+
+
+
+// deletion 
+function deleteItem(id){
+    todoList=todoList.filter(item => item.id!=id);
+    console.log(todoList);
+    renderTodoItems();
+}
+
+
+
+   /* cursor Typing  */
+
+   var TxtType = function(el, toRotate, period) {
+        this.toRotate = toRotate;
+        this.el = el;
+        this.loopNum = 0;
+        this.period = parseInt(period, 10) || 2000;
+        this.txt = '';
+        this.tick();
+        this.isDeleting = false;
+    };
+
+    TxtType.prototype.tick = function() {
+        var i = this.loopNum % this.toRotate.length;
+        var fullTxt = this.toRotate[i];
+
+        if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+        var that = this;
+        var delta = 200 - Math.random() * 100;
+
+        if (this.isDeleting) { delta /= 2; }
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+        }
+
+        setTimeout(function() {
+        that.tick();
+        }, delta);
+    };
+
+    window.onload = function() {
+        var elements = document.getElementsByClassName('typewrite');
+        for (var i=0; i<elements.length; i++) {
+            var toRotate = elements[i].getAttribute('data-type');
+            var period = elements[i].getAttribute('data-period');
+            if (toRotate) {
+              new TxtType(elements[i], JSON.parse(toRotate), period);
+            }
+        }
+        // INJECT CSS
+        var css = document.createElement("style");
+        css.type = "text/css";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+        document.body.appendChild(css);
+    };
+
+
+
+
+
+    </script>
+    <!-- <script src="index.js"></script> -->
+</body>
+</html>
+
+
+
+
+  <!-- <div class="todo-item">
+                <div class="todo-title">
+                    todo 1
+                </div>
+                <div class="todo-action">
+                   <a href="#" class="action-delete">Delete</a> 
+                </div>
+            </div>
+            
+            <div class="todo-item">
+                <div class="todo-title">
+                    todo 1
+                </div>
+                <div class="todo-action">
+                    <a href="#" class="action-delete">Delete</a> 
+                </div>
+            </div>
+
+              <div class="todo-item">
+                <div class="todo-title">
+                    todo 1
+                </div>
+                <div class="todo-action">
+                    <a href="#" class="action-delete">Delete</a>  
+                </div>
+            </div> -->
